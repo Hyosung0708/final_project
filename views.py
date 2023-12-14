@@ -38,7 +38,7 @@ time_refresh_net = TIME_JS_REFRESH_NET
 version = VERSION
 
 
-@login_required(login_url='/login/')
+# @login_required(login_url='/login/')
 def index(request):
     """
     Index page.
@@ -335,7 +335,7 @@ def get_netstat():
     return data
 
 
-@login_required(login_url='/login/')
+# @login_required(login_url='/login/')
 def getall(request):
     return render(request, 'main.html', {
         'time_refresh': time_refresh,
