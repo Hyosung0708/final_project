@@ -28,6 +28,7 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+from django.shortcuts import render
 
 from pydash.settings import TIME_JS_REFRESH, TIME_JS_REFRESH_LONG, TIME_JS_REFRESH_NET, VERSION
 
@@ -336,7 +337,9 @@ def get_netstat():
 
 @login_required(login_url='/login/')
 def getall(request):
-    return render_to_response('main.html', {'time_refresh': time_refresh,
-                                            'time_refresh_long': time_refresh_long,
-                                            'time_refresh_net': time_refresh_net,
-                                            'version': version}, context_instance=RequestContext(request))
+    return render(request, 'main.html', {
+        'time_refresh': time_refresh,
+        'time_refresh_long': time_refresh_long,
+        'time_refresh_net': time_refresh_net,
+        'version': version
+    })
