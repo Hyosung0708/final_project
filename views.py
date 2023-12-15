@@ -23,6 +23,9 @@
 import platform
 import os
 import multiprocessing
+import pandas as pd
+from django.http import HttpResponse
+
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
@@ -37,6 +40,20 @@ time_refresh_long = TIME_JS_REFRESH_LONG
 time_refresh_net = TIME_JS_REFRESH_NET
 version = VERSION
 
+## 수정 부분
+
+## 위 26, 27
+
+def load_csv(request):
+    data = pd.read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')  # 실제 CSV 파일 경로로 변경해주세요.
+    return HttpResponse(data.to_html())  # DataFrame을 HTML로 변환하여 반환합니다.
+
+def main(request):
+    data = pd.read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')
+    context = {'data': data.to_html()}  # DataFrame을 HTML로 변환하여 context에 추가합니다.
+    return render(request, 'main.html', context)  # context를 템플릿에 전달합니다.
+
+##
 
 # @login_required(login_url='/login/')
 def index(request):

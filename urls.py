@@ -4,11 +4,13 @@ from django.views.static import serve
 from main.views import index, getall
 from usage.views import uptime, memusage, cpuusage, getdisk, getusers, getips, gettraffic, getproc, getdiskio, loadaverage, platform, getcpus, getnetstat
 from django.contrib.auth.views import LoginView, LogoutView
+from main.views import load_csv
 
 urlpatterns = [
     path('', index, name='index'),
     #path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     #path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('load_csv/', load_csv, name='load_csv'),
     path('main/', getall, name='main'),
     path('info/uptime/', uptime, name='uptime'),
     path('info/memory/', memusage, name='memusage'),
