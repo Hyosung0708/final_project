@@ -1,0 +1,7 @@
+진행할 것
+
+df-concatenated2.csv
+
+날짜 x축
+
+품목 컬럼 숫자 조회수 y축
