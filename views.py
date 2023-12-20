@@ -25,6 +25,7 @@ import os
 import multiprocessing
 import pandas as pd
 from django.http import HttpResponse
+from django.http import JsonResponse
 
 from datetime import timedelta
 
@@ -52,6 +53,12 @@ def main(request):
     data = pd.read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')
     context = {'data': data.to_html()}  # DataFrame을 HTML로 변환하여 context에 추가합니다.
     return render(request, 'main.html', context)  # context를 템플릿에 전달합니다.
+
+
+def load_csv(request):
+    data = pd.read_csv('/home/ubuntu/pydash/static/csv/df-concatenated2.csv')  # CSV 파일 로드
+    return JsonResponse(data.to_dict(), safe=False)  # DataFrame을 딕셔너리로 변환하여 JSON으로 반환
+
 
 ##
 

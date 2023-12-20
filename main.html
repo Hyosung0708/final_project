@@ -28,6 +28,7 @@
         </div>
     </div>
  </div>
+<canvas id="csvChart"></canvas>
 <div class="subnavbar visible-desktop visible-tablet">
   <div class="subnavbar-inner">
       <div class="container">
@@ -386,6 +387,60 @@ var load_ctx = $("#loadChart").get(0).getContext("2d");
             });
         }
 
+// 수정중인
+
+var csv_ctx = $("#csvChart").get(0).getContext("2d");  // 차트를 그릴 canvas 요소의 컨텍스트를 가져옵니다.
+var csvChart = new Chart(csv_ctx);  // Chart.js 객체를 생성합니다.
+
+function loadCsvData() {
+    $.getJSON('/load_csv/', function(data) {
+        // 'data'에는 서버에서 반환한 CSV 데이터가 들어있습니다.
+        // 이 데이터를 Chart.js에서 사용할 수 있는 형태로 변환합니다:
+        var labels = Object.keys(data);
+        var datasets = Object.values(data).map(function(values, i) {
+            return {
+                label: labels[i],
+                data: values,
+                fill: false,
+                borderColor: 'rgb(' + Math.floor(Math.random() * 255) + ', ' +
+                              Math.floor(Math.random() * 255) + ', ' +
+                              Math.floor(Math.random() * 255) + ')',  // 랜덤한 색상
+                tension: 0.1
+            };
+        });
+
+        // 차트의 옵션을 설정합니다:
+        var options = {
+            animation: false,
+            pointDotRadius: 2,
+            scaleLabel: "<%=value%>",
+            responsive: true,
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: '날짜'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: '품목'
+                    }
+                }
+            }
+        };
+
+        // 차트를 그립니다:
+        csvChart.Line({labels: labels, datasets: datasets}, options);
+    });
+}
+
+
+//
+
 $(function() {
             window.setInterval('dashboard.getProc()', {{ time_refresh_long }});
             window.setInterval('memory_usage()', {{ time_refresh }});
@@ -397,6 +452,7 @@ $(function() {
             window.setInterval('dashboard.getDisk()', {{ time_refresh_long }});
             window.setInterval('dashboard.getUsers()', {{ time_refresh_long }});
             window.setInterval('dashboard.getNetstat()', {{ time_refresh_long }});
+            window.setInterval('loadCsvData()', {{ time_refresh_long }});
         });
 
 $(function pageLoad() {
@@ -416,6 +472,7 @@ $(function pageLoad() {
     dashboard.getUsers();
     dashboard.getNetstat();
     dashboard.getIps();
+    loadCsvData();
     });
 </script>
 
