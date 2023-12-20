@@ -319,6 +319,9 @@
 <script src="{% static "js/Chart.min.js" %}"></script>
 <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "js/dashboard.js" %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <!--[if lte IE 8]>
     <script src="{% static "js/excanvas.js" %}"></script>
 <![endif]-->
@@ -439,7 +442,16 @@ function loadCsvData() {
     });
 }
 
-
+document.querySelector('a[href="#load_csv"]').addEventListener('click', function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = function(event) {
+        var file = event.target.files[0];
+        // 여기서 file 객체를 이용해 CSV 파일을 읽고 처리하실 수 있습니다.
+    };
+    input.click();
+});
 //
 
 $(function() {
