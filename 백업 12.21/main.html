@@ -16,7 +16,7 @@
     {% block style %}{% endblock %}
 </head>
 <body>
-<a href="https://github.com/k3oni/pydash"><img style="position: absolute; top: 0; right: 0; border: 0;z-index:99999999;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+<!-- <a href="https://github.com/k3oni/pydash"><img style="position: absolute; top: 0; right: 0; border: 0;z-index:99999999;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a> -->
 <div class="navbar navbar-fixed-top" style="">
     <div class="navbar-inner">
     <div class="container">
@@ -28,12 +28,14 @@
         </div>
     </div>
  </div>
+ 
+
 <div class="subnavbar visible-desktop visible-tablet">
   <div class="subnavbar-inner">
       <div class="container">
         <ul class="mainnav">
-            <li><a href="#refresh-os"><i class="fa fa-dashboard"></i><span>CSV</span> </a> </li>
-            <li><a href="#refresh-os"><i class="fa fa-dashboard"></i><span>General</span> </a> </li>
+            <li><a href="#load_csv"><i class="fa fa-file"></i><span>Load CSV</span> </a> </li>
+            <!-- <li><a href="#refresh-os"><i class="fa fa-dashboard"></i><span>General</span> </a> </li>
             <li><a href="#refresh-df"><i class="fa fa-hdd-o"></i><span>Disk</span> </a> </li>
             <li><a href="#refresh-cpu"><i class="fa fa-check"></i><span>CPU</span> </a> </li>
             <li><a href="#refresh-ram"><i class="fa fa-list-alt"></i><span>RAM</span> </a> </li>
@@ -41,7 +43,7 @@
             <li><a href="#refresh-online"><i class="fa fa-user"></i><span>Users</span> </a> </li>
             <li><a href="#refresh-netstat"><i class="fa fa-angle-down"></i><span>Netstat</span> </a> </li>
             <li><a href="#refresh-ispeed"><i class="fa fa-exchange"></i><span>Network</span> </a> </li>
-            <li><a href="#refresh-ps"><i class="fa fa-list-alt"></i><span>Processes</span> </a> </li>
+            <li><a href="#refresh-ps"><i class="fa fa-list-alt"></i><span>Processes</span> </a> </li> -->
             <li></li>
     </ul>
       </div>
@@ -53,18 +55,34 @@
   <div class="main-inner"> 
     <div class="container">
     {% block content %}
-        
+    
      <div class="row">
         
-        <div class="span3">
-         <div class="widget widget-table action-table">
-            <div class="widget-header"> <i class="fa fa-dashboard"></i>
-              <h3>General Info</h3><i class="fa fa-minus"></i>
-              <div id="refresh-os">
-              </div>
+      <div class="row">
+        <div class="span12">
+          <div class="widget">
+            <div class="widget-header"> 
+              <i class="fa fa-chart-line"></i>
+              <h3> Dashboard </h3>
+              <i class="fa fa-minus"></i>
             </div>
             <!-- /widget-header -->
             <div class="widget-content">
+              <canvas id="csvChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+        <!-- <div class="span3">
+         <div class="widget widget-table action-table">
+            <div class="widget-header"> <i class="fa fa-dashboard"></i>
+              <h3>General Info</h3><i class="fa fa-minus"></i>
+              <div id="refresh-os"><div>{{ data|safe }}</div>
+              </div>
+            </div> -->
+            <!-- /widget-header -->
+            <!-- <div class="widget-content">
                 <br>
               <div style="text-align:center;">
         <b>OS:</b> <span class="" id="get-osname"></span><br>
@@ -74,42 +92,42 @@
         <b>CPU(s):</b> <span class="" id="get-cpucount"></span> x <span class="" id="get-cputype"></span>
                 <br><br>
               </div>
-            </div>
+            </div> -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
         </div>
         
-        <div class="span3">
+        <!-- <div class="span3">
          <div class="widget widget-table action-table">
             <div class="widget-header"> <i class="fa fa-check"></i>
               <h3>CPU Usage %</h3><i class="fa fa-minus"></i>
               <div id="refresh-cpu">
               </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-            <div class="widget-content">
+            <!-- <div class="widget-content">
             <p></p>
                 <canvas id="cpuuChart" width="270" height="180"></canvas>
                 <div>
                 <span class="cpuf">{% trans "Free" %}</span>
                 <span class="cpuu">{% trans "Used" %}</span>
             </div>
-            </div>
+            </div> -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
         </div>
         
-        <div class="span6">
+        <!-- <div class="span6">
          <div class="widget widget-nopad">
             <div class="widget-header"> <i class="fa fa-list-alt"></i>
                 <h3>Memory Usage</h3><i class="fa fa-minus"></i>
                 <div id="refresh-ram">
                 </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-                <div class="widget-content">
+                <!-- <div class="widget-content">
                     <p></p>
                     <canvas id="memoryChart" width="560" height="200"></canvas>
                     <div>
@@ -118,34 +136,14 @@
                 <span class="memb">{% trans "Buffers" %}</span>
                 <span class="memc">{% trans "Cached" %}</span>
                 </div>
-                </div>
+                </div> -->
                 <!-- /widget-content -->
                 
-              </div>
+              <!-- </div>
         </div>
         
      </div>
     
-     <div class="widget widget-nopad">
-          <div class="widget-header"> <i class="fa fa-table"></i>
-          <h3>CSV</h3><i class="fa fa-minus"></i>
-          <div id="refresh-csv">
-              <div id="csv-table"></div>
-          </div>
-      </div>
-      <!-- /widget-header -->
-        <div class="widget-content">
-          <p></p>
-          <canvas id="csvChart" width="560" height="200"></canvas>
-          <div>
-              <!-- CSV 데이터에 대한 추가 정보를 표시하려면 이 div에 추가하세요. -->
-          </div>
-        </div>
-      <!-- /widget-content -->
-        </div>
-      </div>
-
-
     <div class="row">
          <div class="span6">
            <div class="widget widget-table action-table">
@@ -153,28 +151,28 @@
               <h3>Disk Usage</h3><i class="fa fa-minus"></i>
               <div id="refresh-df">
               </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-            <div class="widget-content">
+            <!-- <div class="widget-content">
         <table id="get_disk" class="table table-hover table-condensed table-bordered" >
         </table>
-            </div>
+            </div> -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
-         </div>
+         <!-- </div>
           <div class="span6">
             <div class="widget widget-table action-table">
             <div class="widget-header"> <i class="fa fa-bolt"></i>
               <h3>Load Average</h3><i class="fa fa-minus"></i>
               <div id="refresh-load">
               </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-            <div class="widget-content">
+            <!-- <div class="widget-content">
                 <p></p>
                 <canvas id="loadChart" width="560" height="200"></canvas>
-            </div>
+            </div> -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
@@ -184,34 +182,34 @@
     <!-- /row -->
     
     
-      <div class="row">
+      <!-- <div class="row">
         <div class="span6">
            <div class="widget widget-table action-table">
             <div class="widget-header"> <i class="fa fa-level-up"></i>
               <h3>IP Adresses</h3><i class="fa fa-minus"></i>
               <div id="refresh-ip">
               </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-            <div class="widget-content">
+            <!-- <div class="widget-content">
         <table id="get_ips" class="table table-hover table-condensed table-bordered">
         </table>
-            </div>
+            </div> -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
          </div>
          <!-- /span -->
-    
+<!--     
          <div class="span3">
            <div class="widget">
             <div class="widget-header"> <i class="fa fa-exchange"></i>
               <h3>Internet Traffic</h3><i class="fa fa-minus"></i>
               <div id="refresh-ispeed">
               </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-            <div class="widget-content">
+            <!-- <div class="widget-content">
             <p></p>
                 <canvas id="trfChart" width="270" height="200"></canvas>
                 <div>
@@ -219,28 +217,28 @@
                 <span class="netout">{% trans "Out" %}</span>
             </div>
             </div>
-            
+             -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
          </div><!-- /span -->
          
-         <div class="span3">
+         <!-- <div class="span3">
            <div class="widget">
             <div class="widget-header"> <i class="fa fa-angle-up"></i>
               <h3>Disk Reads/Writes</h3><i class="fa fa-minus"></i>
               <div id="refresh-diskio">
               </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-            <div class="widget-content">
+            <!-- <div class="widget-content">
             <p></p>
                 <canvas id="dskChart" width="270" height="200"></canvas>
                 <div>
                 <span class="diskr">{% trans "Reads" %}</span>
                 <span class="diskw">{% trans "Writes" %}</span>
             </div>
-            </div>
+            </div> -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
@@ -249,36 +247,36 @@
       </div>
       <!-- /row -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="span6">
              <div class="widget widget-table action-table">
                 <div class="widget-header"> <i class="fa fa-group"></i>
                   <h3>Online</h3><i class="fa fa-minus"></i>
                   <div id="refresh-online">
                   </div>
-                </div>
+                </div> -->
                 <!-- /widget-header -->
-                <div class="widget-content">
+                <!-- <div class="widget-content">
                     <table id="get_users" class="table table-hover table-condensed table-bordered">
                     </table>
-                </div>
+                </div> -->
                 <!-- /widget-content -->
              </div>
               <!-- /widget -->
         </div>
         <!-- /span -->
-        <div class="span6">
+        <!-- <div class="span6">
              <div class="widget widget-table action-table">
                 <div class="widget-header"> <i class="fa fa-angle-down"></i>
                   <h3>Netstat</h3><i class="fa fa-minus"></i>
                   <div id="refresh-netstat">
                   </div>
-                </div>
+                </div> -->
                 <!-- /widget-header -->
-                <div class="widget-content">
+                <!-- <div class="widget-content">
                     <table id="get_netstat" class="table table-hover table-condensed table-bordered">
                     </table>
-                </div>
+                </div> -->
                 <!-- /widget-content -->
              </div>
               <!-- /widget -->
@@ -286,7 +284,7 @@
         <!-- /span -->
     </div>
     <!-- /row -->
-
+<!-- 
       <div class="row">
         <div class="span12">
           <div class="widget">
@@ -294,12 +292,12 @@
               <h3> Processes </h3><i class="fa fa-minus"></i>
               <div id="refresh-ps">
               </div>
-            </div>
+            </div> -->
             <!-- /widget-header -->
-            <div class="widget-content">
+            <!-- <div class="widget-content">
         <table id="get_proc" class="table table-hover table-condensed table-bordered">
         </table>
-            </div>
+            </div> -->
             <!-- /widget-content -->
           </div>
           <!-- /widget -->
@@ -318,7 +316,7 @@
   <div class="footer-inner">
     <div class="container">
       <div class="row">
-        <div class="span6">&copy; 2014 by <a href="http://github.com/k3oni">Florian Neagu</a> </div>
+        <div class="span6">&copy; 2023 by <a href="https://drive.google.com/drive/folders/1lwL5L5TB9J2ji6DxcRmsK8iby1Ox7wn0">Team 3</a> </div>
         <!-- /span12 --> 
       </div>
       <!-- /row --> 
@@ -329,6 +327,7 @@
 </div>
 <!-- /footer --> 
 
+
 {% endblock %}
 
 {% block script %}
@@ -338,137 +337,194 @@
 <script src="{% static "js/Chart.min.js" %}"></script>
 <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "js/dashboard.js" %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <!--[if lte IE 8]>
     <script src="{% static "js/excanvas.js" %}"></script>
 <![endif]-->
 <script type="text/javascript">
 
-var csv_ctx = $("#csvChart").get(0).getContext("2d");
-var csvChart = new Chart(csv_ctx);
 
-$.get('/home/ubuntu/pydash/static/csv/df-concatenated2.csv', function(data) {
-    var csvData = $.csv.toArrays(data);
-    var labels = csvData[0];
-    var dataset = csvData.slice(1).map(function(row) {
-        return row.map(Number); // CSV 데이터가 숫자라면 이렇게 변환해주세요.
-    });
-
-    var chartData = {
-        labels: labels,
-        datasets: [{
-            data: dataset,
-            backgroundColor: 'rgba(0, 123, 255, 0.5)',
-            borderColor: 'rgba(0, 123, 255, 1)',
-        }]
-    };
-
-    var options = {
-        animation: false,
-        pointDotRadius: 2,
-        scaleLabel: "<%=value%>"
-    };
-
-    csvChart.Line(chartData, options);
+document.addEventListener('DOMContentLoaded', (event) => {
+    const canvas = document.getElementById('csvChart');
+    const ctx = canvas.getContext('2d');
+    // 이후에 canvas와 관련된 코드를 이곳에 작성합니다.
 });
 
+// var mem_ctx = $("#memoryChart").get(0).getContext("2d");
+//         var memChart = new Chart(mem_ctx);
+//         function memory_usage(){
+//             $.getJSON('/info/memory/', function(data) {
+//                 var options = {
+//                     animation : false,
+//                     pointDotRadius : 4,
+//                     scaleLabel : "<%=value%> Mb"
+//                 }
+//                 memChart.Line(data, options);
+//             });
+//         }
 
-var mem_ctx = $("#memoryChart").get(0).getContext("2d");
-        var memChart = new Chart(mem_ctx);
-        function memory_usage(){
-            $.getJSON('/info/memory/', function(data) {
-                var options = {
-                    animation : false,
-                    pointDotRadius : 4,
-                    scaleLabel : "<%=value%> Mb"
-                }
-                memChart.Line(data, options);
-            });
-        }
+// var cpu_ctx = $("#cpuuChart").get(0).getContext("2d");
+//         var cpuChart = new Chart(cpu_ctx);
+//         function cpuu_usage(){
+//             $.getJSON('/info/cpuusage/', function(data) {
+//                 var options = {
+//                     percentageInnerCutout : 50,
+//                     segmentStrokeWidth : 0
+//                 }
+//                 cpuChart.Doughnut(data, options);
+//             });
+//         }
 
-var cpu_ctx = $("#cpuuChart").get(0).getContext("2d");
-        var cpuChart = new Chart(cpu_ctx);
-        function cpuu_usage(){
-            $.getJSON('/info/cpuusage/', function(data) {
-                var options = {
-                    percentageInnerCutout : 50,
-                    segmentStrokeWidth : 0
-                }
-                cpuChart.Doughnut(data, options);
-            });
-        }
-
-var trf_ctx = $("#trfChart").get(0).getContext("2d");
-        var trfChart = new Chart(trf_ctx);
-        function traffic_usage(){
-            $.getJSON('/info/gettraffic/', function(data) {
-                var options = {
-                    animation : false,
-                    pointDotRadius : 2,
-                    scaleLabel : "<%=value%>"
-                }
-                trfChart.Line(data, options);
-            });
-        }
+// var trf_ctx = $("#trfChart").get(0).getContext("2d");
+//         var trfChart = new Chart(trf_ctx);
+//         function traffic_usage(){
+//             $.getJSON('/info/gettraffic/', function(data) {
+//                 var options = {
+//                     animation : false,
+//                     pointDotRadius : 2,
+//                     scaleLabel : "<%=value%>"
+//                 }
+//                 trfChart.Line(data, options);
+//             });
+//         }
         
-var dsk_ctx = $("#dskChart").get(0).getContext("2d");
-        var dskChart = new Chart(dsk_ctx);
-        function disk_io(){
-            $.getJSON('/info/getdiskio/', function(data) {
-                var options = {
-                    animation : false,
-                    pointDotRadius : 2,
-                    scaleLabel : "<%=value%>"
-                }
-                dskChart.Line(data, options);
-            });
-        }
+// var dsk_ctx = $("#dskChart").get(0).getContext("2d");
+//         var dskChart = new Chart(dsk_ctx);
+//         function disk_io(){
+//             $.getJSON('/info/getdiskio/', function(data) {
+//                 var options = {
+//                     animation : false,
+//                     pointDotRadius : 2,
+//                     scaleLabel : "<%=value%>"
+//                 }
+//                 dskChart.Line(data, options);
+//             });
+//         }
 
-var load_ctx = $("#loadChart").get(0).getContext("2d");
-        var loadChart = new Chart(load_ctx);
-        function load_average(){
-            $.getJSON('/info/loadaverage/', function(data) {
-                var options = {
-                    animation : false,
-                    pointDotRadius : 2,
-                    scaleLabel : "<%=value%>"
+// var load_ctx = $("#loadChart").get(0).getContext("2d");
+//         var loadChart = new Chart(load_ctx);
+//         function load_average(){
+//             $.getJSON('/info/loadaverage/', function(data) {
+//                 var options = {
+//                     animation : false,
+//                     pointDotRadius : 2,
+//                     scaleLabel : "<%=value%>"
+//                 }
+//                 loadChart.Line(data, options);
+//             });
+//         }
+
+// 수정중인
+
+var csv_ctx = $("#csvChart").get(0).getContext("2d");  // 차트를 그릴 canvas 요소의 컨텍스트를 가져옵니다.
+var csvChart = new Chart(csv_ctx);  // Chart.js 객체를 생성합니다.
+
+function loadCsvData() {
+    $.getJSON('/load_csv/', function(data) {
+        // 'data'에는 서버에서 반환한 CSV 데이터가 들어있습니다.
+        // 이 데이터를 Chart.js에서 사용할 수 있는 형태로 변환합니다:
+        var labels = Object.keys(data);
+        var datasets = Object.values(data).map(function(values, i) {
+            return {
+                label: labels[i],
+                data: values,
+                fill: false,
+                borderColor: 'rgb(' + Math.floor(Math.random() * 255) + ', ' +
+                              Math.floor(Math.random() * 255) + ', ' +
+                              Math.floor(Math.random() * 255) + ')',  // 랜덤한 색상
+                tension: 0.1
+            };
+        });
+
+        // 차트의 옵션을 설정합니다:
+        var options = {
+            animation: false,
+            pointDotRadius: 2,
+            scaleLabel: "<%=value%>",
+            responsive: true,
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: '날짜'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: '품목'
+                    }
                 }
-                loadChart.Line(data, options);
-            });
-        }
+            }
+        };
+
+        // 차트를 그립니다:
+        csvChart.Line({labels: labels, datasets: datasets}, options);
+    });
+}
+
+document.querySelector('a[href="#load_csv"]').addEventListener('click', function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = function(event) {
+        var file = event.target.files[0];
+        // 여기서 file 객체를 이용해 CSV 파일을 읽고 처리하실 수 있습니다.
+    };
+    input.click();
+});
+//
+
+// $(function() {
+//             window.setInterval('dashboard.getProc()', {{ time_refresh_long }});
+//             window.setInterval('memory_usage()', {{ time_refresh }});
+//             window.setInterval('load_average()', {{ time_refresh }});
+//             window.setInterval('cpuu_usage()', {{ time_refresh }});
+//             window.setInterval('traffic_usage()', {{ time_refresh_net }});
+//             window.setInterval('disk_io()', {{ time_refresh_net }});
+//             window.setInterval('dashboard.getUptime()', {{ time_refresh_long }});
+//             window.setInterval('dashboard.getDisk()', {{ time_refresh_long }});
+//             window.setInterval('dashboard.getUsers()', {{ time_refresh_long }});
+//             window.setInterval('dashboard.getNetstat()', {{ time_refresh_long }});
+//             window.setInterval('loadCsvData()', {{ time_refresh_long }});
+//         });
+
+// $(function pageLoad() {
+//     dashboard.getProc();
+//     memory_usage();
+//     load_average();
+//     cpuu_usage();
+//     traffic_usage();
+//     disk_io();
+//     dashboard.getOSname();
+//     dashboard.getUptime();
+//     dashboard.getHostname();
+//     dashboard.getKernel();
+//     dashboard.getCPUcount();
+//     dashboard.getCPUtype();
+//     dashboard.getDisk();
+//     dashboard.getUsers();
+//     dashboard.getNetstat();
+//     dashboard.getIps();
+//     loadCsvData();
+//     });
+
+
 
 $(function() {
-            window.setInterval('dashboard.getProc()', {{ time_refresh_long }});
-            window.setInterval('memory_usage()', {{ time_refresh }});
-            window.setInterval('load_average()', {{ time_refresh }});
-            window.setInterval('cpuu_usage()', {{ time_refresh }});
-            window.setInterval('traffic_usage()', {{ time_refresh_net }});
-            window.setInterval('disk_io()', {{ time_refresh_net }});
-            window.setInterval('csv_usage()', {{ time_refresh_net }});
-            window.setInterval('dashboard.getUptime()', {{ time_refresh_long }});
-            window.setInterval('dashboard.getDisk()', {{ time_refresh_long }});
-            window.setInterval('dashboard.getUsers()', {{ time_refresh_long }});
-            window.setInterval('dashboard.getNetstat()', {{ time_refresh_long }});
-        });
+    window.setInterval('dashboard.getProc()', {{ time_refresh_long }});
+    window.setInterval('loadCsvData()', {{ time_refresh_long }});
+});
 
 $(function pageLoad() {
     dashboard.getProc();
-    memory_usage();
-    load_average();
-    cpuu_usage();
-    traffic_usage();
-    disk_io();
-    csv_usage();
-    dashboard.getOSname();
-    dashboard.getUptime();
-    dashboard.getHostname();
-    dashboard.getKernel();
-    dashboard.getCPUcount();
-    dashboard.getCPUtype();
-    dashboard.getDisk();
-    dashboard.getUsers();
-    dashboard.getNetstat();
-    dashboard.getIps();
-    });
+    loadCsvData();
+});
+
 </script>
 
 

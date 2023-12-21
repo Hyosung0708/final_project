@@ -1,14 +1,18 @@
 from django.urls import path
 from django.conf import settings
 from django.views.static import serve
-from main.views import index, getall
-from usage.views import uptime, memusage, cpuusage, getdisk, getusers, getips, gettraffic, getproc, getdiskio, loadaverage, platform, getcpus, getnetstat, csv_usage
+# from main.views import index, getall
+from usage.views import uptime, memusage, cpuusage, getdisk, getusers, getips, gettraffic, getproc, getdiskio, loadaverage, platform, getcpus, getnetstat
 from django.contrib.auth.views import LoginView, LogoutView
+# from main.views import load_csv
+from . import views
 
 urlpatterns = [
     path('', index, name='index'),
     #path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     #path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('csv-data/', views.csv_data, name='csv-data'),
+    #path('load_csv/', load_csv, name='load_csv'),
     path('main/', getall, name='main'),
     path('info/uptime/', uptime, name='uptime'),
     path('info/memory/', memusage, name='memusage'),
@@ -23,7 +27,6 @@ urlpatterns = [
     path('info/platform/<str:name>/', platform, name='platform'),
     path('info/getcpus/<str:name>/', getcpus, name='getcpus'),
     path('info/getnetstat/', getnetstat, name='getnetstat'),
-    path('info/csv_usage/', csv_usage, name='csv_usage'),
     path('static/<path:path>/', serve, {'document_root': settings.STATIC_ROOT}),
 ]
 

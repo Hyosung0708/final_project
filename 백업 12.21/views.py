@@ -23,7 +23,10 @@
 import platform
 import os
 import multiprocessing
-import csv
+import pandas as pd
+from django.http import HttpResponse
+from django.http import JsonResponse
+
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
@@ -37,17 +40,39 @@ time_refresh = TIME_JS_REFRESH
 time_refresh_long = TIME_JS_REFRESH_LONG
 time_refresh_net = TIME_JS_REFRESH_NET
 version = VERSION
-# 수정 시작
 
-# CSV 파일 읽는 함수
-def read_csv(file_path):
-    with open(file_path, 'r') as file:
-        return file.read()
+## 수정 부분
 
-# 뷰 생성
-def csv_usage(request):
-    data = read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')  # 여기에 CSV 파일 경로를 입력하세요.
-    return render(request, 'main.html', {'data': data})
+## 위 26, 27
+
+def load_csv_as_html(request):
+    data = pd.read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')  # 실제 CSV 파일 경로로 변경해주세요.
+    return HttpResponse(data.to_html())  # DataFrame을 HTML로 변환하여 반환합니다.
+
+def load_csv_as_json(request):
+    data = pd.read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')  # CSV 파일 로드
+    return JsonResponse(data.to_dict(), safe=False)  # DataFrame을 딕셔너리로 변환하여 JSON으로 반환
+
+def main(request):
+    data = pd.read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')
+    context = {'data': data.to_html()}  # DataFrame을 HTML로 변환하여 context에 추가합니다.
+    return render(request, 'main.html', context)  # context를 템플릿에 전달합니다.
+
+def csv_data(request):
+    # CSV 파일 읽기
+    data = pd.read_csv('/home/ubuntu/pydash/static/csv/df_concatenated2.csv')
+
+    # 데이터프레임을 딕셔너리 형태로 변환
+    data_dict = data.to_dict()
+
+    # 딕셔너리를 context로 전달
+    context = {'data': data_dict}
+
+    # context와 함께 template 렌더
+    return render(request, 'main.html', context)
+
+
+##
 
 # @login_required(login_url='/login/')
 def index(request):
